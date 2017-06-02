@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>彩票随机选数字</title>
+	<style type="text/css">
+			*{
+				margin: 0;
+				padding: 0;
+			}
+			#outer{
+				padding: 50px 0px;
+				background: rgb(255, 242, 242);
+				width: 620px;
+				margin: 0 auto;
+			}
+			#inner{
+				margin: 0 auto;
+				width: 490px;
+				overflow: hidden;
+				display: flex;
+				justify-content:center;
+				flex-wrap:wrap;
+			}
+			#inner span{
+				width: 30px;
+				height: 30px;
+				margin: 18px 6px;
+				border: 1px solid #ccc;
+				text-align: center;
+				line-height: 30px;
+				border-radius: 50%;
+				background: #fff;
+			}
+			#inner span.active{
+				background: red;
+				color: #fff;
+			}
+			#btnp{
+				text-align: center;
+			}
+			button{
+				width: 120px;
+				height: 40px;
+				border-radius: 4px;
+				background: gray;
+				text-align: center;
+				line-height: 40px;
+				outline: none;
+				border: none;
+				font-size: 20px;
+				border-radius: 4px;
+			}
+			#btn1{
+				color: #fff;
+				background: red;
+			}
+		</style>
+</head>
+<body>
+	<div id="outer">
+			<div id="inner">
+				<span>01</span>
+				<span>02</span>
+				<span>03</span>
+				<span>04</span>
+				<span>05</span>
+				<span>06</span>
+				<span>07</span>
+				<span>08</span>
+				<span>09</span>
+				<span>10</span>
+				<span>11</span>
+				<span>12</span>
+				<span>13</span>
+				<span>14</span>
+				<span>15</span>
+				<span>16</span>
+				<span>17</span>
+				<span>18</span>
+				<span>19</span>
+				<span>20</span>
+				<span>21</span>
+				<span>22</span>
+				<span>23</span>
+				<span>24</span>
+				<span>25</span>
+				<span>26</span>
+				<span>27</span>
+				<span>28</span>
+				<span>29</span>
+				<span>30</span>
+				<span>31</span>
+				<span>32</span>
+				<span>33</span>
+			</div>
+			<p id="btnp">
+				<button id="btn1">机选红球</button>
+				<button id="btn2">清空</button>
+			</p>
+		</div>
+	<script type="text/javascript">
+		var inner = document.getElementById('inner');
+		var balls = inner.getElementsByTagName('span');
+		var btnStart = document.getElementById('btn1');
+		var btnClear = document.getElementById('btn2');
+		var time = null;
+		var time1 = null;
+		//创建随机函数
+		function rand(min,max){
+			return parseInt(Math.random() * (max - min + 1) + min);
+		}
+		//取数组函数
+		function makeArr(){
+			//创建空数组用来存放号码
+			var arr = [];
+			while(arr.length < 7){
+				//当数组长度小于7的时候，取随机数并push到数组中
+				var randNum = rand(0,32);
+				//判断该随机数在数组中是否存在
+				if(arr.indexOf(randNum) == -1){
+					arr.push(randNum);
+				}
+			}
+			return arr;
+		}
+		// console.log(makeArr());
+		//创建选球函数
+		function makeBall(){
+			//在选球之前先清除原来的选球
+			clear();
+			//要选球需要先有数组
+			var arr = makeArr();
+			//遍历数组里面的number，将里面对应的选球变红
+			for(var i = 0;i < arr.length;i++){
+				balls[arr[i]].className = 'active';
+			}
+		}
+		//创建清除红球的函数
+			function clear(){
+				for(var i = 0;i < balls.length;i++){
+					balls[i].className = '';
+				}
+			}
+		//给开始按钮绑定事件
+		btnStart.onclick = function(){
+			clearInterval(time);
+			clearTimeout(time1);
+			time = setInterval(makeBall,100);
+			//设置延时计时器，短暂的延时后清除选球的计时器
+			time1 = setTimeout(function(){
+				clearInterval(time);
+			},2000)
+		}
+		//点击清空按钮，清除红球
+		btnClear.onclick = function(){
+			clearInterval(time);
+			clearInterval(time1);
+			clear();
+		}
+	</script>
+</body>
+</html>
